@@ -8,12 +8,17 @@ import java.util.List;
 
 public class Mandate {
     
+    private static int PARLIAMENT = 349;
+    
     public static class Cast implements Comparable<Cast> {
+        
+        private static final BigDecimal SPARE = new BigDecimal("0.04");
+        private static final BigDecimal NORM = new BigDecimal("1.4");
+        private static final int SCALE = 10;
         
         private final String code;
         private final BigDecimal votes;
         private int mandate = 0;
-        private int odd = 0;
         private BigDecimal comparison;
 
         public Cast(String initial, BigDecimal percent) {
@@ -21,10 +26,6 @@ public class Mandate {
             this.votes = percent;
             comparison = percent.divide(NORM, 10, RoundingMode.HALF_UP);
         }
-        
-        private static final BigDecimal SPARE = new BigDecimal("0.04");
-        private static final BigDecimal NORM = new BigDecimal("1.4");
-        private static final int SCALE = 10;
         
         public boolean isElegible(BigDecimal total) {
             return SPARE.compareTo(votes.divide(total, SCALE, RoundingMode.HALF_UP)) <= 0;
@@ -35,18 +36,22 @@ public class Mandate {
             return -comparison.compareTo(cast.comparison);
         }
 
-        public void give() {
+        public void increment() {
             mandate++;
-            odd++;
-            comparison = votes.divide(new BigDecimal(odd * 2 + 1), SCALE, RoundingMode.HALF_UP);
+            comparison = votes.divide(new BigDecimal(mandate * 2 + 1), SCALE, RoundingMode.HALF_UP);
         }
 
         public BigDecimal effective() {
-            return new BigDecimal(mandate).divide(new BigDecimal(349), SCALE, RoundingMode.HALF_UP);
+            return new BigDecimal(mandate).divide(new BigDecimal(PARLIAMENT), SCALE, RoundingMode.HALF_UP);
         }
         
         public String format(BigDecimal total) {
             return String.format("%s:\tvotes=%s\tpercent=%s%%\tmandate=%d\teffective=%s%%", code, votes, percent(votes.divide(total, 10, RoundingMode.HALF_UP)), mandate, percent(effective()));            
+        }
+
+        @Override
+        public String toString() {
+            return "{ code => " + code + ", mandate => " + mandate + ", comparison => " + comparison + " }";
         };
         
     }
@@ -64,26 +69,28 @@ public class Mandate {
     }
     
     public void calculate() {
-        for (int i = 0; i < 349; i++) {
+        List<Cast> casts = new LinkedList<>(this.casts);
+        for (int i = 0; i < PARLIAMENT; i++) {
             Collections.sort(casts);
             Cast cast = casts.get(0);
-            cast.give();
+//            System.out.println(i + casts.toString());
+            cast.increment();
         }
     }
     
     public static void main(String[] args) {
         Mandate mandate = new Mandate(
-            new BigDecimal(6035006),
-            new Cast("M",  new BigDecimal(1402194)),
-            new Cast("C",  new BigDecimal(370573)),
-            new Cast("FP", new BigDecimal(325756)),
-            new Cast("KD", new BigDecimal(277045)),
-            new Cast("S",  new BigDecimal(1885211)),
-            new Cast("V",  new BigDecimal(344281)),
-            new Cast("MP", new BigDecimal(408053)),
-            new Cast("SD", new BigDecimal(780754)),
-            new Cast("FI", new BigDecimal(184129)),
-            new Cast("Övr", new BigDecimal(57010))
+            new BigDecimal(6036835),
+            new Cast("M",  new BigDecimal(1402975)),
+            new Cast("C",  new BigDecimal(370709)),
+            new Cast("FP", new BigDecimal(325921)),
+            new Cast("KD", new BigDecimal(277143)),
+            new Cast("S",  new BigDecimal(1885463)),
+            new Cast("V",  new BigDecimal(344360)),
+            new Cast("MP", new BigDecimal(408224)),
+            new Cast("SD", new BigDecimal(780831)),
+            new Cast("FI", new BigDecimal(184171)),
+            new Cast("Övr", new BigDecimal(57038))
         );
         mandate.calculate();
         mandate.print();
