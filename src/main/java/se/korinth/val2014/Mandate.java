@@ -69,17 +69,17 @@ public class Mandate {
     
     public static void main(String[] args) {
         Mandate mandate = new Mandate(
-            new BigDecimal(5959970),
-            new Cast("M",  new BigDecimal(1398392)),
-            new Cast("C",  new BigDecimal(369993)),
-            new Cast("FP", new BigDecimal(324930)),
-            new Cast("KD", new BigDecimal(276254)),
-            new Cast("S",  new BigDecimal(1880332)),
-            new Cast("V",  new BigDecimal(343568)),
-            new Cast("MP", new BigDecimal(407251)),
-            new Cast("SD", new BigDecimal(779466)),
-            new Cast("FI", new BigDecimal(183808)),
-            new Cast("Övr", new BigDecimal(56992))
+            new BigDecimal(6028681),
+            new Cast("M",  new BigDecimal(1400225)),
+            new Cast("C",  new BigDecimal(370280)),
+            new Cast("FP", new BigDecimal(325371)),
+            new Cast("KD", new BigDecimal(276654)),
+            new Cast("S",  new BigDecimal(1883290)),
+            new Cast("V",  new BigDecimal(344013)),
+            new Cast("MP", new BigDecimal(407647)),
+            new Cast("SD", new BigDecimal(780163)),
+            new Cast("FI", new BigDecimal(183964)),
+            new Cast("Övr", new BigDecimal(57074))
         );
         mandate.calculate();
         mandate.print();
