@@ -6,6 +6,35 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+
+/**
+ * <h1>Fasta mandat och utjämningsmandat</h1>
+ * 
+ * När de fasta mandaten fördelats mellan partierna inom varje valkrets summeras
+ * partiernas fasta mandat i alla valkretsar (totalt 310 mandat). Därefter görs
+ * en mandatfördelning med partiernas totala röstetal i hela landet som
+ * underlag. Denna gång fördelas 349 mandat och hela landet räknas som en
+ * valkrets.
+ * 
+ * Resultaten av de båda mandatfördelningarna jämförs. Om ett parti fått fler
+ * mandat vid fördelningen med hela landet som en valkrets har partiet rätt till
+ * utjämningsmandat. Ett parti får utjämningsmandat i den valkrets där partiets
+ * jämförelsetal är störst efter fördelningen av de fasta mandaten.
+ * 
+ * Om ett parti får fler mandat vid valkretsfördelningen än vid
+ * totalfördelningen behåller partiet dessa mandat. Då görs en ny
+ * totalfördelning med det partiets mandat borträknade.
+ * 
+ * Om ett parti inte har fått fasta mandat i alla valkretsar, när
+ * utjämningsmandaten ska fördelas, används partiets röstetal som jämförelsetal
+ * i de valkretsar, där partiet ännu inte har fått något mandat.
+ * 
+ * <h2>OBS!</h2>
+ * 
+ * Denna implementation illustrerar med körtest endast mandatberäkning med hela
+ * landet som en valkrets, och behöver anpassas för att kunna räkna fram
+ * korrekta platser i riksdagen, enligt specifikationen ovan.
+ */
 public class Mandate {
     
     private static int PARLIAMENT = 349;
@@ -53,6 +82,14 @@ public class Mandate {
         public String toString() {
             return "{ code => " + code + ", mandate => " + mandate + ", comparison => " + comparison + " }";
         };
+        
+        public String getCode() {
+            return code;
+        }
+
+        public int getMandate() {
+            return mandate;
+        }
         
     }
     
